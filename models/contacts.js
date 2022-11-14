@@ -40,7 +40,7 @@ const updateStatusContact = async (contactId, favorite) => {
 
   return updatedContact;
 };
-
+  
 module.exports = {
   listContacts,
   getContactById,
