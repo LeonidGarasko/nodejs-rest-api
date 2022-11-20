@@ -1,11 +1,10 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-
 const { errorHandler } = require("./helpers/apiHelpers");
 
-
 const contactsRouter = require("./routes/api/contacts");
+const usersRouter = require("./routes/api/users");
 
 const app = express();
 
@@ -19,6 +18,8 @@ app.get("/", function (req, res) {
   res.send("DataBase of Contacts");
 });
 
+app.use("/users", usersRouter);
+
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {
@@ -26,6 +27,5 @@ app.use((req, res) => {
 });
 
 app.use(errorHandler);
-
 
 module.exports = app;
