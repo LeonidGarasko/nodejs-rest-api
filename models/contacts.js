@@ -38,28 +38,21 @@ const addContact = async ({ name, email, phone, favorite }, owner) => {
 };
 
 const updateContact = async (contactId, owner, body) => {
-  await Contact.findOneAndUpdate(
+  const updatedContact = await Contact.findOneAndUpdate(
     { $and: [{ owner }, { _id: contactId }] },
     { $set: body },
-    { runValidators: true }
+    { runValidators: true, new: true }
   );
-
-  const updatedContact = await Contact.find({
-    $and: [{ owner }, { _id: contactId }],
-  });
 
   return updatedContact;
 };
 
 const updateStatusContact = async (contactId, owner, favorite) => {
-  await Contact.findOneAndUpdate(
+  const updatedContact = await Contact.findOneAndUpdate(
     { $and: [{ owner }, { _id: contactId }] },
     { favorite },
-    { runValidators: true }
+    { runValidators: true, new: true }
   );
-  const updatedContact = await Contact.find({
-    $and: [{ owner }, { _id: contactId }],
-  });
 
   return updatedContact;
 };
