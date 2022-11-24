@@ -3,7 +3,9 @@ const {
   loginUser,
   patchSubscriptionUser,
   getCurrentUser,
+  uploadUserAvatar,
 } = require("../models/users");
+const { User } = require("../db/userModel");
 
 const signupUserController = async (req, res) => {
   const { email, password } = req.body;
@@ -40,9 +42,26 @@ const getCurrentUserController = async (req, res) => {
   res.status(200).json({ status: "success", user });
 };
 
+const logoutUserController = async (req, res) => {
+  const { _id } = req.user;
+
+  await User.findByIdAndUpdate(_id, { token: null }, { runValidators: true });
+  res.status(200).json({ message: "Success logout" });
+};
+
+const patchUserAvatarController = async (req, res) => {
+  const { filename } = req.file;
+  const { _id } = req.user;
+  const updatedUser = await uploadUserAvatar(_id, filename);
+
+  res.status(200).json({ status: "success", user: updatedUser });
+};
+
 module.exports = {
   signupUserController,
   loginUserController,
   patchSubscriptionUserController,
   getCurrentUserController,
+  logoutUserController,
+  patchUserAvatarController,
 };
