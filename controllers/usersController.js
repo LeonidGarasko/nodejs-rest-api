@@ -4,6 +4,8 @@ const {
   patchSubscriptionUser,
   getCurrentUser,
   uploadUserAvatar,
+  verificationUser,
+  repeatedVerifictaionUser,
 } = require("../models/users");
 const { User } = require("../db/userModel");
 
@@ -57,6 +59,23 @@ const patchUserAvatarController = async (req, res) => {
   res.status(200).json({ status: "success", user: updatedUser });
 };
 
+const verifictaionUserController = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  await verificationUser(verificationToken);
+  res.status(200).json({ message: "Verification successful" });
+};
+
+const repeatedVerifictaionUserController = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    res.status(400).json({ message: "missing required field email" });
+  }
+
+  await repeatedVerifictaionUser(email);
+  res.status(200).json({ message: "Verification email sent" });
+};
+
 module.exports = {
   signupUserController,
   loginUserController,
@@ -64,4 +83,6 @@ module.exports = {
   getCurrentUserController,
   logoutUserController,
   patchUserAvatarController,
+  verifictaionUserController,
+  repeatedVerifictaionUserController,
 };
